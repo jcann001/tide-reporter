@@ -1,0 +1,55 @@
+body{
+  background-color: cornflowerblue;
+  background-image: url("/images/bg1.jpeg");
+  /* padding: 25px; */
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.form-signin{
+  margin: auto;
+  width: 35%;
+  display: block;
+  background-position: center;
+  position: relative; 
+  margin-top: 10%;
+  padding: 15px;
+  background-color: whitesmoke;
+  border-radius: 40px;
+  border: 2px solid darkgray;
+}
+
+#fName{
+  margin-top: 10px;
+}
+
+#lName{
+  margin-top: 10px;
+}
+
+#email{
+  margin-top: 10px;
+}
+
+#lat{
+  margin-top: 10px;
+width: 49.5%;
+/* padding-right: 50px; */
+display: inline-block;
+}
+
+#long{
+  margin-top: 10px;
+  width: 49.5%;
+  /* padding-right: 50px; */
+  display: inline-block;
+  }
+
+.btn{
+  margin-top: 15px;
+}
+
+.mt-5{
+  margin-top: 15px;
+  margin-bottom: -5px;
+}
