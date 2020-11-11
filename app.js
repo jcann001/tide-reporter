@@ -3,8 +3,6 @@ const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser  = require("body-parser");
 const nodemailer = require("nodemailer");
-const { getMaxListeners } = require("npm");
-const { json } = require("body-parser");
 require('dotenv').config();
 
 const app = express();
