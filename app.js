@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
-const cron = require("node-cron");
+// const cron = require("node-cron");
 const moment = require('moment-timezone');
 require('dotenv').config();
 
@@ -29,7 +29,7 @@ app.post("/", function (req, res) {
   const lat = req.body.lat;
   const lng = req.body.long;
 
-  cron.schedule('* 0 4 * * Sun', () => {
+  // cron.schedule('* 0 4 * * Sun', () => {
 
     fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}`, {
       headers: {
@@ -129,7 +129,7 @@ app.post("/", function (req, res) {
 
 
     });
-  })
+  // })
   try {
     res.sendFile(__dirname + "/success.html");
   } catch (error) {
