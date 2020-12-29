@@ -3,8 +3,9 @@ const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
-// const cron = require("node-cron");
 const moment = require('moment-timezone');
+const mongoose = require('mongoose');
+// const {MongoClient} = require('mongodb');
 require('dotenv').config();
 
 const app = express();
@@ -14,6 +15,22 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+mongoose.connect("mongodb+srv://jcann001:q8UfNqYG4JpmilMB@cluster0.v2n4v.mongodb.net/tidereporterjcDB?retryWrites=true&w=majority", { useNewUrlParser: true,  useUnifiedTopology: true });
+
+const userSchema = new mongoose.Schema({
+  firstName : String,
+  lastName : String,
+  email: String,
+  password: String,
+  city: String,
+  state: String,
+  lat: Number,
+  lng: Number
+});
+
+const User = new mongoose.model("User", userSchema);
+
+
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/signup.html");
 
@@ -21,17 +38,26 @@ app.get("/", function (req, res) {
 
 
 app.post("/", function (req, res) {
-  const firstName = req.body.fName;
-  const lastName = req.body.lName;
-  const email = req.body.email;
-  const city = req.body.city;
-  const state = req.body.state;
-  const lat = req.body.lat;
-  const lng = req.body.long;
+  const newUser = new User({
+  firstName: req.body.fName,
+  lastName: req.body.lName,
+  email: req.body.email,
+  city: req.body.city,
+  state: req.body.state,
+  lat: req.body.lat,
+  lng: req.body.long
+  });
 
-  // cron.schedule('* 0 4 * * Sun', () => {
+  newUser.save(function(err){
+    if(err){
+      console.log(err);
+    } else {
+      console.log("New User Saved");
+    }
+  });
+ 
 
-    fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}`, {
+    fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${newUser.lat}&lng=${newUser.lng}`, {
       headers: {
         'Authorization': '2231c0d2-1675-11eb-b3db-0242ac130002-2231c14a-1675-11eb-b3db-0242ac130002'
       }
@@ -81,9 +107,9 @@ app.post("/", function (req, res) {
 
       let mailOptions = {
         from: 'cannonj55@gmail.com',
-        to: email,
+        to: newUser.email,
         subject: 'Your Local Tide Report',
-        html: '<h3> Hello ' + firstName + ', <br><br>' + 'The tidal extremes for ' + city + ', ' + state + ' are posted below: </h3><br> <h5>' +
+        html: '<h3> Hello ' + newUser.firstName + ', <br><br>' + 'The tidal extremes for ' + newUser.city + ', ' + newUser.state + ' are posted below: </h3><br> <h5>' +
 
           '<li>' + jsonData.data[0].type.toUpperCase() + ' tide on ' + time0.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
           '<li>' + jsonData.data[1].type.toUpperCase() + ' tide  on ' + time1.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
@@ -129,14 +155,12 @@ app.post("/", function (req, res) {
 
 
     });
-  // })
   try {
     res.sendFile(__dirname + "/success.html");
   } catch (error) {
     res.sendFile(__dirname + "/failure.html");
   }
 });
-
 
 
 app.listen(process.env.PORT || 3000, function () {
