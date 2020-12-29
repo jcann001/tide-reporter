@@ -1,6 +1,6 @@
 body{
-  background-color: cornflowerblue;
-  background-image: url("/images/bg1.jpeg");
+  background-color: rgb(55, 93, 165);
+  background-image: url("/images/bg3.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   animation: transitionIn 0.75s;
