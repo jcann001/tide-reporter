@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const moment = require('moment-timezone');
 const mongoose = require('mongoose');
-// const {MongoClient} = require('mongodb');
 require('dotenv').config();
 
 const app = express();
@@ -15,13 +14,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-mongoose.connect("mongodb+srv://jcann001:q8UfNqYG4JpmilMB@cluster0.v2n4v.mongodb.net/tidereporterjcDB?retryWrites=true&w=majority", { useNewUrlParser: true,  useUnifiedTopology: true });
+mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}@cluster0.v2n4v.mongodb.net/tidereporterjcDB?retryWrites=true&w=majority`, { useNewUrlParser: true,  useUnifiedTopology: true });
 
 const userSchema = new mongoose.Schema({
   firstName : String,
   lastName : String,
   email: String,
-  password: String,
   city: String,
   state: String,
   lat: Number,
