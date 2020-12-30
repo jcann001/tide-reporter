@@ -2,6 +2,7 @@
 const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser = require("body-parser");
+const cron = require('node-cron');
 const nodemailer = require("nodemailer");
 const moment = require('moment-timezone');
 const mongoose = require('mongoose');
@@ -36,6 +37,7 @@ app.get("/", function (req, res) {
 
 
 app.post("/", function (req, res) {
+
   const newUser = new User({
   firstName: req.body.fName,
   lastName: req.body.lName,
@@ -53,9 +55,34 @@ app.post("/", function (req, res) {
       console.log("New User Saved");
     }
   });
+
+  User.find({}, function(err, docs) {
+    cron.schedule('* 0 4 * * Wed', () => {
+      // cron.schedule('*/1 * * * *', () => {
+    if (!err) { 
+      for (let i = 0; i < docs.length; i++) {
+      firstName = docs[i].firstName,
+      lastName = docs[i].lastName,
+      email = docs[i].email,
+      city = docs[i].city,
+      state = docs[i].state,
+      lat = docs[i].lat,
+      lng = docs[i].lng
+
+      console.log(email)
+  }
+        
+        
+    }
+    else {
+        throw err;
+    }
+
+
+
  
 
-    fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${newUser.lat}&lng=${newUser.lng}`, {
+    fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}`, {
       headers: {
         'Authorization': '2231c0d2-1675-11eb-b3db-0242ac130002-2231c14a-1675-11eb-b3db-0242ac130002'
       }
@@ -105,40 +132,39 @@ app.post("/", function (req, res) {
 
       let mailOptions = {
         from: 'cannonj55@gmail.com',
-        to: newUser.email,
+        to: email,
         subject: 'Your Local Tide Report',
-        html: '<h3> Hello ' + newUser.firstName + ', <br><br>' + 'The tidal extremes for ' + newUser.city + ', ' + newUser.state + ' are posted below: </h3><br> <h5>' +
+        html: '<h3> Hello ' + firstName + ', <br><br>' + 'The tidal extremes for ' + city + ', ' + state + ' are posted below: </h3><br> <h5>' +
 
-          '<li>' + jsonData.data[0].type.toUpperCase() + ' tide on ' + time0.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[1].type.toUpperCase() + ' tide  on ' + time1.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[2].type.toUpperCase() + ' tide  on ' + time2.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[3].type.toUpperCase() + ' tide  on ' + time3.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[4].type.toUpperCase() + ' tide  on ' + time4.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[5].type.toUpperCase() + ' tide  on ' + time5.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[6].type.toUpperCase() + ' tide  on ' + time6.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[7].type.toUpperCase() + ' tide  on ' + time7.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[8].type.toUpperCase() + ' tide  on ' + time8.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[9].type.toUpperCase() + ' tide  on ' + time9.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[10].type.toUpperCase() + ' tide  on ' + time10.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[11].type.toUpperCase() + ' tide  on ' + time11.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[12].type.toUpperCase() + ' tide  on ' + time12.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[13].type.toUpperCase() + ' tide  on ' + time13.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[14].type.toUpperCase() + ' tide  on ' + time14.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[15].type.toUpperCase() + ' tide  on ' + time15.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[16].type.toUpperCase() + ' tide  on ' + time16.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[17].type.toUpperCase() + ' tide  on ' + time17.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[18].type.toUpperCase() + ' tide  on ' + time18.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[19].type.toUpperCase() + ' tide  on ' + time19.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[20].type.toUpperCase() + ' tide  on ' + time20.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[21].type.toUpperCase() + ' tide  on ' + time21.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[22].type.toUpperCase() + ' tide  on ' + time22.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[23].type.toUpperCase() + ' tide  on ' + time23.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[24].type.toUpperCase() + ' tide  on ' + time24.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[25].type.toUpperCase() + ' tide  on ' + time25.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[26].type.toUpperCase() + ' tide  on ' + time26.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[27].type.toUpperCase() + ' tide  on ' + time27.tz('America/New_York').format('MMMM Do YYYY, @ h:mm a z') + '</li><br><br><br>' + '<h3>Thank you, ' + '<br>' + 'Tide Reporter</h3>' + '<h5>Local Station: ' + jsonData.meta.station.name + '<br>' + "Source: " + jsonData.meta.station.source + '</h5></h5>',
+          '<li>' + jsonData.data[0].type.toUpperCase() + ' tide on ' + time0.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[1].type.toUpperCase() + ' tide  on ' + time1.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[2].type.toUpperCase() + ' tide  on ' + time2.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[3].type.toUpperCase() + ' tide  on ' + time3.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[4].type.toUpperCase() + ' tide  on ' + time4.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[5].type.toUpperCase() + ' tide  on ' + time5.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[6].type.toUpperCase() + ' tide  on ' + time6.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[7].type.toUpperCase() + ' tide  on ' + time7.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[8].type.toUpperCase() + ' tide  on ' + time8.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[9].type.toUpperCase() + ' tide  on ' + time9.tz('America/New_York').format('dddd,MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[10].type.toUpperCase() + ' tide  on ' + time10.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[11].type.toUpperCase() + ' tide  on ' + time11.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[12].type.toUpperCase() + ' tide  on ' + time12.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[13].type.toUpperCase() + ' tide  on ' + time13.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[14].type.toUpperCase() + ' tide  on ' + time14.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[15].type.toUpperCase() + ' tide  on ' + time15.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[16].type.toUpperCase() + ' tide  on ' + time16.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[17].type.toUpperCase() + ' tide  on ' + time17.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[18].type.toUpperCase() + ' tide  on ' + time18.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[19].type.toUpperCase() + ' tide  on ' + time19.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[20].type.toUpperCase() + ' tide  on ' + time20.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[21].type.toUpperCase() + ' tide  on ' + time21.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[22].type.toUpperCase() + ' tide  on ' + time22.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[23].type.toUpperCase() + ' tide  on ' + time23.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[24].type.toUpperCase() + ' tide  on ' + time24.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[25].type.toUpperCase() + ' tide  on ' + time25.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[26].type.toUpperCase() + ' tide  on ' + time26.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
+          '<li>' + jsonData.data[27].type.toUpperCase() + ' tide  on ' + time27.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br><br>' + '<h3>Thank you, ' + '<br>' + 'Tide Reporter</h3>' + '<h5>Local Station: ' + jsonData.meta.station.name + '<br>' + "Source: " + jsonData.meta.station.source + '</h5></h5>',
       };
-
 
 
       transporter.sendMail(mailOptions, function (err, data) {
@@ -148,17 +174,19 @@ app.post("/", function (req, res) {
           console.log('Email sent :)');
         }
       });
-
-
-
-
-    });
+    }); 
+  });
+  
+  });
   try {
     res.sendFile(__dirname + "/success.html");
   } catch (error) {
     res.sendFile(__dirname + "/failure.html");
   }
 });
+
+
+
 
 
 app.listen(process.env.PORT || 3000, function () {
