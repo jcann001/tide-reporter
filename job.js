@@ -16,7 +16,8 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}@cluster0.v2n4v.mongodb.net/tidereporterjcDB?retryWrites=true&w=majority`, { useNewUrlParser: true,  useUnifiedTopology: true });
+mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}@cluster0.v2n4v.mongodb.net/tidereporterjcDB?retryWrites=true&w=majority`, { useNewUrlParser: true,  useUnifiedTopology: true, useCreateIndex: true, bufferMaxEntries : 0,
+bufferCommands: false});
 
 const userSchema = new mongoose.Schema({
     firstName : String,
@@ -32,7 +33,7 @@ const userSchema = new mongoose.Schema({
 
 
 var j = schedule.scheduleJob('*/1 * * * *', function(){
-  
+
     User.find({}, function(err, docs) {
     // cron.schedule('* 0 4 * * Wed', () => {
       // cron.schedule('*/1 * * * *', () => {
@@ -138,7 +139,7 @@ var j = schedule.scheduleJob('*/1 * * * *', function(){
           } else {
             console.log('Email sent :)');
           }
-        });
+        }.catch(console.error))
       });
     }
   } else{

@@ -79,9 +79,6 @@ app.post("/", function (req, res) {
   //   else {
   //       throw err;
   //   }
-
-
-
  
 
     fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${newUser.lat}&lng=${newUser.lng}`, {
