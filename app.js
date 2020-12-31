@@ -58,33 +58,33 @@ app.post("/", function (req, res) {
   });
 
   
-    User.find({}, function(err, docs) {
-    // cron.schedule('* 0 4 * * Wed', () => {
-      // cron.schedule('*/1 * * * *', () => {
-    if (!err) { 
-      for (let i = 0; i < docs.length; i++) {
-      firstName = docs[i].firstName,
-      lastName = docs[i].lastName,
-      email = docs[i].email,
-      city = docs[i].city,
-      state = docs[i].state,
-      lat = docs[i].lat,
-      lng = docs[i].lng
+  //   User.find({}, function(err, docs) {
+  //   // cron.schedule('* 0 4 * * Wed', () => {
+  //     // cron.schedule('*/1 * * * *', () => {
+  //   if (!err) { 
+  //     for (let i = 0; i < docs.length; i++) {
+  //     firstName = docs[i].firstName,
+  //     lastName = docs[i].lastName,
+  //     email = docs[i].email,
+  //     city = docs[i].city,
+  //     state = docs[i].state,
+  //     lat = docs[i].lat,
+  //     lng = docs[i].lng
 
-      console.log(email)
-  }
+  //     console.log(email)
+  // }
         
         
-    }
-    else {
-        throw err;
-    }
+  //   }
+  //   else {
+  //       throw err;
+  //   }
 
 
 
  
 
-    fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}`, {
+    fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${newUser.lat}&lng=${newUser.lng}`, {
       headers: {
         'Authorization': '2231c0d2-1675-11eb-b3db-0242ac130002-2231c14a-1675-11eb-b3db-0242ac130002'
       }
@@ -134,9 +134,9 @@ app.post("/", function (req, res) {
 
       let mailOptions = {
         from: 'cannonj55@gmail.com',
-        to: email,
+        to: newUser.email,
         subject: 'Your Local Tide Report',
-        html: '<h3> Hello ' + firstName + ', <br><br>' + 'The tidal extremes for ' + city + ', ' + state + ' are posted below: </h3><br> <h5>' +
+        html: '<h3> Hello ' + newUser.firstName + ', <br><br>' + 'The tidal extremes for ' + newUser.city + ', ' + newUser.state + ' are posted below: </h3><br> <h5>' +
 
           '<li>' + jsonData.data[0].type.toUpperCase() + ' tide on ' + time0.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
           '<li>' + jsonData.data[1].type.toUpperCase() + ' tide  on ' + time1.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
@@ -177,7 +177,7 @@ app.post("/", function (req, res) {
         }
       });
     }); 
-  });
+  // });
 
   try {
     res.sendFile(__dirname + "/success.html");
