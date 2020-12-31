@@ -139,7 +139,7 @@ var j = schedule.scheduleJob('*/1 * * * *', function(){
           } else {
             console.log('Email sent :)');
           }
-        }.catch(console.error))
+        });
       });
     }
   } else{
