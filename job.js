@@ -155,3 +155,8 @@ var j = schedule.scheduleJob('*/1 * * * *', function(){
   });
   
   });
+
+
+  app.listen(process.env.PORT, function () {
+    console.log("Server is running");
+  });
