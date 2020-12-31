@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}@cluster0.v2n4v.mongodb.net/tidereporterjcDB?retryWrites=true&w=majority`, { useNewUrlParser: true,  useUnifiedTopology: true, useCreateIndex: true, bufferMaxEntries : 0,
+await mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}@cluster0.v2n4v.mongodb.net/tidereporterjcDB?retryWrites=true&w=majority`, { useNewUrlParser: true,  useUnifiedTopology: true, useCreateIndex: true, bufferMaxEntries : 0,
 bufferCommands: false});
 
 const userSchema = new mongoose.Schema({
