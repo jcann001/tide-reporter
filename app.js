@@ -2,7 +2,8 @@
 const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser = require("body-parser");
-const cron = require('node-cron');
+// const cron = require('node-cron');
+const schedule = require('node-schedule');
 const nodemailer = require("nodemailer");
 const moment = require('moment-timezone');
 const mongoose = require('mongoose');
@@ -56,8 +57,10 @@ app.post("/", function (req, res) {
     }
   });
 
-  User.find({}, function(err, docs) {
-    cron.schedule('* 0 4 * * Wed', () => {
+  var j = schedule.scheduleJob('*/1 * * * *', function(){
+  
+    User.find({}, function(err, docs) {
+    // cron.schedule('* 0 4 * * Wed', () => {
       // cron.schedule('*/1 * * * *', () => {
     if (!err) { 
       for (let i = 0; i < docs.length; i++) {
