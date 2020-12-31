@@ -19,44 +19,19 @@ app.use(bodyParser.urlencoded({
 mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}@cluster0.v2n4v.mongodb.net/tidereporterjcDB?retryWrites=true&w=majority`, { useNewUrlParser: true,  useUnifiedTopology: true });
 
 const userSchema = new mongoose.Schema({
-  firstName : String,
-  lastName : String,
-  email: String,
-  city: String,
-  state: String,
-  lat: Number,
-  lng: Number
-});
-
-const User = new mongoose.model("User", userSchema);
-
-
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/signup.html");
-
-});
-
-
-app.post("/", function (req, res) {
-
-  const newUser = new User({
-  firstName: req.body.fName,
-  lastName: req.body.lName,
-  email: req.body.email,
-  city: req.body.city,
-  state: req.body.state,
-  lat: req.body.lat,
-  lng: req.body.long
+    firstName : String,
+    lastName : String,
+    email: String,
+    city: String,
+    state: String,
+    lat: Number,
+    lng: Number
   });
+  
+  const User = new mongoose.model("User", userSchema);
 
-  newUser.save(function(err){
-    if(err){
-      console.log(err);
-    } else {
-      console.log("New User Saved");
-    }
-  });
 
+var j = schedule.scheduleJob('*/1 * * * *', function(){
   
     User.find({}, function(err, docs) {
     // cron.schedule('* 0 4 * * Wed', () => {
@@ -178,18 +153,5 @@ app.post("/", function (req, res) {
       });
     }); 
   });
-
-  try {
-    res.sendFile(__dirname + "/success.html");
-  } catch (error) {
-    res.sendFile(__dirname + "/failure.html");
-  }
-});
-
-
-
-
-
-app.listen(process.env.PORT || 3000, function () {
-  console.log("Server is running on port 3000");
-});
+  
+  });
