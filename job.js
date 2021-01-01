@@ -45,8 +45,8 @@ var j = schedule.scheduleJob('*/1 * * * *', function(){
       city = docs[i].city,
       state = docs[i].state,
       lat = docs[i].lat,
-      lng = docs[i].lng
-
+      lng = docs[i].lng;
+      }
       console.log(email)
       fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${docs[i].lat}&lng=${docs[i].lng}`, {
         headers: {
@@ -142,11 +142,11 @@ var j = schedule.scheduleJob('*/1 * * * *', function(){
         });
       });
     }
-  } else{
+  else {
         throw err;
     }
   });
-});
+}.catch(console.error));
 
 
   app.listen(process.env.PORT || 3000, function () {
