@@ -20,8 +20,7 @@ mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
-  bufferMaxEntries: 0,
-  bufferCommands: false
+  bufferMaxEntries: 0
 });
 
 const userSchema = new mongoose.Schema({
@@ -37,7 +36,7 @@ const userSchema = new mongoose.Schema({
 const User = new mongoose.model("User", userSchema);
 
 
-var j = schedule.scheduleJob('* 0 6 * * Fri', function () {
+// var j = schedule.scheduleJob('*/ * * * *', function () {
 
   User.find({}, function (err, docs) {
     // cron.schedule('* 0 4 * * Wed', () => {
@@ -150,7 +149,7 @@ var j = schedule.scheduleJob('* 0 6 * * Fri', function () {
       console.log("Error, unable to grab transmit data", err);
     }
   });
-});
+// });
 
 
 app.listen(process.env.PORT || 3000, function () {
