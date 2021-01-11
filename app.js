@@ -2,7 +2,6 @@
 const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser = require("body-parser");
-// const cron = require('node-cron');
 const schedule = require('node-schedule');
 const nodemailer = require("nodemailer");
 const moment = require('moment-timezone');
@@ -39,6 +38,7 @@ app.get("/", function (req, res) {
 
 app.post("/", function (req, res) {
 
+  //post information
   const newUser = new User({
   firstName: req.body.fName,
   lastName: req.body.lName,
@@ -49,6 +49,7 @@ app.post("/", function (req, res) {
   lng: req.body.long
   });
 
+  //save to DB
   newUser.save(function(err){
     if(err){
       console.log(err);
@@ -56,41 +57,17 @@ app.post("/", function (req, res) {
       console.log("New User Saved");
     }
   });
-
-  
-  //   User.find({}, function(err, docs) {
-  //   // cron.schedule('* 0 4 * * Wed', () => {
-  //     // cron.schedule('*/1 * * * *', () => {
-  //   if (!err) { 
-  //     for (let i = 0; i < docs.length; i++) {
-  //     firstName = docs[i].firstName,
-  //     lastName = docs[i].lastName,
-  //     email = docs[i].email,
-  //     city = docs[i].city,
-  //     state = docs[i].state,
-  //     lat = docs[i].lat,
-  //     lng = docs[i].lng
-
-  //     console.log(email)
-  // }
-        
-        
-  //   }
-  //   else {
-  //       throw err;
-  //   }
  
-
+  //fetch API data
     fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${newUser.lat}&lng=${newUser.lng}`, {
       headers: {
         'Authorization': '2231c0d2-1675-11eb-b3db-0242ac130002-2231c14a-1675-11eb-b3db-0242ac130002'
       }
     }).then((response) => response.json()).then((jsonData) => {
-      // Do something with response data.
-      // console.log(jsonData.meta);
+     
       console.log('Request Count: ' + jsonData.meta.requestCount);
-      // console.log(jsonData.data);
-
+      
+      //format and save data
       var time0 = moment(jsonData.data[0].time);
       var time1 = moment(jsonData.data[1].time);
       var time2 = moment(jsonData.data[2].time);
@@ -120,7 +97,7 @@ app.post("/", function (req, res) {
       var time26 = moment(jsonData.data[26].time);
       var time27 = moment(jsonData.data[27].time);
 
-
+      //authenticate email
       let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -129,6 +106,7 @@ app.post("/", function (req, res) {
         }
       });
 
+      //create email & convert data timezone
       let mailOptions = {
         from: 'cannonj55@gmail.com',
         to: newUser.email,
@@ -165,7 +143,7 @@ app.post("/", function (req, res) {
           '<li>' + jsonData.data[27].type.toUpperCase() + ' tide  on ' + time27.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br><br>' + '<h3>Thank you, ' + '<br>' + 'Tide Reporter</h3>' + '<h5>Local Station: ' + jsonData.meta.station.name + '<br>' + "Source: " + jsonData.meta.station.source + '</h5></h5>',
       };
 
-
+      //send email
       transporter.sendMail(mailOptions, function (err, data) {
         if (err) {
           console.log('Error, Unable to send ', err);
@@ -176,7 +154,7 @@ app.post("/", function (req, res) {
     }); 
   // });
 
-  try {
+  try { //redirect pages
     res.sendFile(__dirname + "/success.html");
   } catch (error) {
     res.sendFile(__dirname + "/failure.html");

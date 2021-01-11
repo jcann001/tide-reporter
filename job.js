@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
 const User = new mongoose.model("User", userSchema);
 
 
-// var j = schedule.scheduleJob('* * * * * Sun', function () {
+var j = schedule.scheduleJob('0 4 * * * Monday', function () {
 
   User.find({}, function (err, docs) {
     // cron.schedule('* 0 4 * * Wed', () => {
@@ -149,7 +149,7 @@ const User = new mongoose.model("User", userSchema);
       console.log("Error, unable to grab transmit data", err);
     }
   });
-// });
+});
 
 
 app.listen(process.env.PORT || 3000, function () {
