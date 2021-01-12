@@ -1,38 +1,75 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Tide Seeker</title> 
-  <link href="/images/favicon.ico" rel="icon" />
-  <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="/css/styles.css" rel="stylesheet">
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Tide Seeker</title> 
+    <link href="/images/favicon.ico" rel="icon" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet" media="all">
 </head>
 
-<body class="text-center col-sm-12 col-xs-12">
-  <form action="/" class="form-signin col-6" method="POST">
-    <img class="mb-4" src="/images/logo.png" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Find your local tide now!</h1>
+<body>
+    <div class="page-wrapper bg-red p-t-180 p-b-100 font-robo">
+        <div class="wrapper wrapper--w960">
+            <div class="card card-2">
+                <div class="card-heading"></div>
+                <div class="card-body">
+                    <h2 class="title" id="title"><img class="mb-4" src="/images/logo.png" alt="" id="logo" width="36" height="36">Tide Seeker</h2>
+                    <form method="POST" action="/">
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input type="text" name="fName" class="input--style-2" placeholder="First Name" id="fName" required autofocus>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input type="text" name="lName" class="input--style-2" placeholder="Last Name" id="lName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" name="email" class="input--style-2" placeholder="Email Address" id="email" required>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input type="text" name="city" class="input--style-2" placeholder="City" id="city" required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input type="text" name="state" class="input--style-2" placeholder="State" id="state" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input type="text" name="lat" class="input--style-2" placeholder="Latitude" id="lat" required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input type="text" name="long" class="input--style-2" placeholder="Longitude" id="long" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-t-30">
+                            <button class="btn btn--radius btn--blue" type="submit">Sign up</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <p class="mt-5 mb-3 text-muted" id="copy">&copy; Cannon 2020</p>
+        </div>
+    </div>
 
-    <input type="text" name="fName" class="form-control" placeholder="First Name" id="fName" required autofocus>
-    <input type="text" name="lName" class="form-control" placeholder="Last Name" id="lName" required>
-    <input type="email" name="email" class="form-control" placeholder="Email Address" id="email" required>
-    <input type="text" name="city" class="form-control" placeholder="City" id="city" required>
-    <input type="text" name="state" class="form-control" placeholder="State" id="state" required>
-    <input type="text" name="lat" class="form-control" placeholder="Latitude" id="lat" required>
-    <input type="text" name="long" class="form-control" placeholder="Longitude" id="long" required>
-
-
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up!</button>
-    <p class="mt-5 mb-3 text-muted">&copy; Cannon 2020</p>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="app.js"></script>
-  </form>
 </body>
 
 </html>
