@@ -140,7 +140,7 @@ app.post("/", function (req, res) {
           '<li>' + jsonData.data[24].type.toUpperCase() + ' tide  on ' + time24.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
           '<li>' + jsonData.data[25].type.toUpperCase() + ' tide  on ' + time25.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
           '<li>' + jsonData.data[26].type.toUpperCase() + ' tide  on ' + time26.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br>' +
-          '<li>' + jsonData.data[27].type.toUpperCase() + ' tide  on ' + time27.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br><br>' + '<h3>Thank you, ' + '<br>' + 'Tide Reporter</h3>' + '<h5>Local Station: ' + jsonData.meta.station.name + '<br>' + "Source: " + jsonData.meta.station.source + '</h5></h5>',
+          '<li>' + jsonData.data[27].type.toUpperCase() + ' tide  on ' + time27.tz('America/New_York').format('dddd, MMMM Do YYYY @ h:mm a z') + '</li><br><br><br>' + '<h3>Thank you, ' + '<br>' + 'Tide Seeker</h3>' + '<h5>Local Station: ' + jsonData.meta.station.name + '<br>' + "Source: " + jsonData.meta.station.source + '</h5></h5>',
       };
 
       //send email
